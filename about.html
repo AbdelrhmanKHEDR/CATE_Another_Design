@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CATE - About Us</title>
+    
+    <link rel="icon" type="image/png" href="Only CATE.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS Variables --- */
+        :root {
+            --primary: #006F8F;
+            --primary-dark: #005a75;
+            --primary-light: #009ebf;
+            --accent-blue: #3b82f6;
+            --bg-body: #f8fafc;
+            --surface-color: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 8px 30px rgba(0,0,0,0.08);
+            --dark-footer: #001f2b;
+            --gradient-text: linear-gradient(135deg, var(--text-main) 0%, var(--primary) 100%);
+            --accent-bg: rgba(0, 111, 143, 0.08);
+        }
+
+        [data-theme="dark"] {
+            --primary: #00d2be;
+            --primary-dark: #00a090;
+            --primary-light: #5eead4;
+            --accent-blue: #60a5fa;
+            --bg-body: #0f172a;
+            --surface-color: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+            --shadow-md: 0 8px 30px rgba(0,0,0,0.4);
+            --dark-footer: #0b1116;
+            --gradient-text: linear-gradient(135deg, #ffffff 0%, var(--primary) 100%);
+            --accent-bg: rgba(0, 210, 190, 0.1);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Inter', 'Cairo', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0; padding: 0;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- Header & Navigation --- */
+        header { 
+            background-color: var(--surface-color); padding: 15px 5%; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow-sm); border-bottom: 1px solid var(--border-color); transition: 0.3s;
+        }
+        
+        .logo-area { display: flex; align-items: center; cursor: pointer; transition: transform 0.3s; }
+        .logo-area:hover { transform: scale(1.05); }
+        .cate-logo { height: 50px; object-fit: contain; }
+        
+        .main-nav { display: flex; gap: 30px; }
+        .nav-link {
+            text-decoration: none; color: var(--text-muted); font-weight: 500; font-size: 0.95rem; transition: 0.3s; position: relative;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--primary); }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--primary); transition: width 0.3s;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        button { border: none; outline: none; cursor: pointer; font-family: inherit; transition: 0.3s; }
+        .btn-icon { background: transparent; color: var(--text-main); width: 45px; height: 45px; border-radius: 50%; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; transition: 0.3s; border: 1px solid var(--border-color); cursor: pointer; }
+        .btn-icon:hover { background: var(--accent-bg); color: var(--primary); border-color: var(--primary); transform: rotate(15deg); }
+
+        /* Mobile Menu Button */
+        .menu-btn { display: none; background: transparent; font-size: 1.8rem; color: var(--text-main); border: none; cursor: pointer; transition: 0.3s; }
+        .menu-btn:hover { color: var(--primary); transform: scale(1.1); }
+
+        /* --- MOBILE MENU STYLES --- */
+        .mobile-menu {
+            position: fixed; top: 0; right: -320px; width: 320px; height: 100vh;
+            background: var(--surface-color); 
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            z-index: 1001; 
+            transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+            padding: 30px; display: flex; flex-direction: column; gap: 40px;
+            border-top-left-radius: 30px; border-bottom-left-radius: 30px;
+        }
+        .mobile-menu.active { right: 0; }
+        
+        .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; }
+        .mobile-logo { height: 40px; filter: grayscale(100%); opacity: 0.7; }
+        .close-menu {
+            font-size: 1.5rem; color: var(--text-muted); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--accent-bg);
+        }
+        .close-menu:hover { background: var(--primary); color: white; transform: rotate(90deg); }
+        
+        .mobile-links { display: flex; flex-direction: column; gap: 15px; }
+        .nav-link-mobile {
+            display: flex; align-items: center; gap: 15px;
+            text-decoration: none; color: var(--text-main);
+            font-size: 1.2rem; font-weight: 700; padding: 15px;
+            border-radius: 15px; transition: 0.3s;
+            opacity: 0; transform: translateX(30px);
+        }
+        .nav-link-mobile i { color: var(--primary); font-size: 1.4rem; width: 30px; text-align: center; transition: 0.3s; }
+        
+        .nav-link-mobile:hover, .nav-link-mobile.active { background: var(--accent-bg); color: var(--primary); transform: translateX(10px); }
+        .nav-link-mobile:hover i { transform: scale(1.2); }
+        
+        .mobile-menu.active .nav-link-mobile {
+            opacity: 1; transform: translateX(0);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            transition-delay: calc(0.1s * var(--i));
+        }
+
+        .overlay-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0;
+            visibility: hidden; transition: 0.4s; backdrop-filter: blur(3px);
+        }
+        .overlay-bg.active { opacity: 1; visibility: visible; }
+
+        /* --- ABOUT US SECTION --- */
+        .about-section { padding: 80px 5%; max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 60px; position: relative; min-height: 80vh; }
+        .watermark { position: absolute; top: 20px; left: 20px; font-size: 15rem; font-weight: 900; color: var(--text-main); opacity: 0.03; line-height: 1; z-index: 0; font-family: 'Inter', sans-serif; }
+        .about-content { flex: 1; z-index: 1; opacity: 0; transform: translateX(-30px); animation: slideInLeft 0.8s ease forwards; }
+        .about-content h2 { font-size: 3rem; font-weight: 800; margin-bottom: 20px; position: relative; color: var(--text-main); }
+        .about-content h2::after { content: ''; display: block; width: 70px; height: 6px; background-color: var(--primary); margin-top: 15px; border-radius: 10px; }
+        .about-content p { font-size: 1.15rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 40px; }
+        .brand-highlight { color: var(--primary); font-weight: 700; font-size: 1.2rem; }
+        .btn-read-more { display: inline-flex; align-items: center; gap: 10px; padding: 12px 35px; border: 2px solid var(--primary); border-radius: 50px; color: var(--primary); font-weight: 700; text-decoration: none; transition: all 0.3s ease; background: transparent; font-size: 1rem; }
+        .btn-read-more:hover { background: var(--primary); color: white; box-shadow: 0 5px 15px rgba(0, 111, 143, 0.3); transform: translateX(5px); }
+        .about-image-wrapper { flex: 1; position: relative; z-index: 1; display: flex; justify-content: center; opacity: 0; transform: translateX(30px); animation: slideInRight 0.8s ease forwards 0.3s; }
+        .main-img { width: 400px; height: 400px; object-fit: cover; border-radius: 50%; border: 8px solid white; box-shadow: var(--shadow-md); position: relative; z-index: 2; }
+        .decor-circle { position: absolute; bottom: -20px; right: 40px; width: 60px; height: 60px; border-radius: 50%; border: 8px solid #000; z-index: 3; }
+        .decor-circle-blue { position: absolute; bottom: 20px; right: -10px; width: 40px; height: 40px; border-radius: 50%; background: var(--primary); z-index: 3; box-shadow: 0 5px 15px rgba(0, 111, 143, 0.4); }
+        .decor-line { position: absolute; top: 50px; right: 20px; width: 150px; height: 150px; border: 2px dashed var(--text-muted); z-index: 0; transform: rotate(45deg); }
+        .decor-pill { position: absolute; bottom: 0; left: 20px; width: 100px; height: 40px; border: 3px solid #333; border-radius: 20px; z-index: 1; }
+
+        /* --- VALUES SECTION --- */
+        .values-section { background-color: var(--surface-color); padding: 80px 5%; text-align: center; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+        .values-header h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 50px; color: var(--text-main); }
+        .values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; }
+        .value-card { padding: 40px 30px; border-radius: 20px; background: var(--bg-body); border: 1px solid var(--border-color); transition: 0.3s; }
+        .value-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-md); border-color: var(--primary); }
+        .val-icon { font-size: 3rem; color: var(--primary); margin-bottom: 20px; }
+        .value-card h3 { font-size: 1.3rem; margin-bottom: 15px; color: var(--text-main); }
+        .value-card p { color: var(--text-muted); line-height: 1.6; }
+
+        /* --- HISTORY TIMELINE SECTION --- */
+        .history-section { padding: 80px 5%; background: linear-gradient(180deg, var(--bg-body) 0%, rgba(0, 111, 143, 0.03) 100%); position: relative; overflow: hidden; }
+        .history-title { text-align: center; font-size: 2.5rem; font-weight: 800; margin-bottom: 80px; color: var(--text-main); position: relative; }
+        .history-title::after { content: ''; display: block; width: 60px; height: 5px; background: var(--primary); margin: 15px auto; border-radius: 10px; }
+        .timeline { position: relative; max-width: 1000px; margin: 0 auto; }
+        .timeline::after { content: ''; position: absolute; width: 4px; background-color: var(--primary-light); top: 0; bottom: 0; left: 50%; margin-left: -2px; border-radius: 2px; }
+        .timeline-container { padding: 10px 40px; position: relative; background-color: inherit; width: 50%; opacity: 0; transition: all 0.8s ease; }
+        .left { left: 0; transform: translateX(-50px); }
+        .right { left: 50%; transform: translateX(50px); }
+        .timeline-container.visible { opacity: 1; transform: translateX(0); }
+        .timeline-container::after { content: ''; position: absolute; width: 20px; height: 20px; right: -10px; background-color: var(--surface-color); border: 4px solid var(--primary); top: 25px; border-radius: 50%; z-index: 1; transition: 0.3s; }
+        .right::after { left: -10px; }
+        .timeline-container:hover::after { background-color: var(--primary); transform: scale(1.2); }
+        .year-badge { position: absolute; top: 0; right: -70px; background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-weight: 700; z-index: 2; box-shadow: 0 4px 10px rgba(0, 111, 143, 0.3); }
+        .right .year-badge { left: -70px; right: auto; }
+        .content { padding: 30px; background-color: var(--surface-color); position: relative; border-radius: 15px; border: 1px solid var(--border-color); box-shadow: var(--shadow-md); transition: 0.3s; }
+        .content:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .content h3 { margin: 0 0 10px; font-size: 1.4rem; color: var(--text-main); }
+        .content p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+        .stats-row { display: flex; justify-content: space-between; border-top: 1px dashed var(--border-color); padding-top: 15px; margin-top: 15px; }
+        .stat-item { text-align: center; }
+        .stat-number { display: block; font-weight: 800; color: var(--accent-blue); font-size: 1.2rem; }
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* --- FOOTER --- */
+        .footer-section { background-color: var(--dark-footer); color: #fff; padding: 60px 20px 40px; width: 100vw; margin-left: -50vw; position: relative; left: 50%; margin-top: 0; }
+        .footer-grid { max-width: 1150px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 50px; padding-top: 40px; text-align: left; }
+        .footer-col h4 { font-size: 1.1rem; margin-bottom: 25px; color: var(--primary-light); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-text, .footer-link { display: block; color: rgba(255,255,255,0.7); font-size: 0.95rem; line-height: 1.8; margin-bottom: 12px; text-decoration: none; transition: 0.3s; }
+        .footer-link:hover { color: var(--primary-light); transform: translateX(5px); }
+        .subscribe-box { display: flex; border-bottom: 2px solid rgba(255,255,255,0.2); transition: 0.3s; }
+        .subscribe-box:focus-within { border-bottom-color: var(--primary-light); }
+        .subscribe-input { background: transparent; border: none; color: white; padding: 12px 0; width: 100%; outline: none; font-size: 1rem; }
+        .subscribe-btn { background: transparent; border: none; color: var(--primary-light); font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; transition: 0.3s; }
+        .subscribe-btn:hover { color: white; }
+        .copyright { text-align: center; margin-top: 60px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+
+        @keyframes slideInLeft { to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInRight { to { opacity: 1; transform: translateX(0); } }
+
+        @media (max-width: 900px) {
+            .about-section { flex-direction: column; text-align: center; padding-top: 40px; }
+            .watermark { left: 50%; transform: translateX(-50%); top: 0; font-size: 10rem; }
+            .about-content h2::after { margin: 15px auto; }
+            .main-img { width: 300px; height: 300px; }
+            .timeline::after { left: 31px; }
+            .timeline-container { width: 100%; padding-left: 70px; padding-right: 25px; }
+            .timeline-container::after { left: 21px; }
+            .left::after { left: 21px; }
+            .right { left: 0%; }
+            .year-badge { position: relative; top: -10px; left: 0; right: auto; display: inline-block; margin-bottom: 10px; }
+            .right .year-badge { left: 0; }
+            .left, .right { transform: translateY(20px); }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+            .subscribe-box { justify-content: center; }
+            .main-nav { display: none; }
+            .menu-btn { display: block; } /* Show menu button on mobile */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area" onclick="goHome()" title="Go Home">
+            <img src="Only CATE.png" alt="CATE" class="cate-logo" onerror="this.src='https://via.placeholder.com/150x60/006F8F/FFFFFF?text=CATE'">
+        </div>
+
+<nav class="main-nav">
+    <a href="about.html" class="nav-link active">About Us</a>
+    <a href="clients.html" class="nav-link">Our Clients</a>
+    <a href="why-us.html" class="nav-link">Why Us?</a>
+    
+    <a href="our-work.html" class="nav-link">Our Work</a>
+    
+    <a href="contact.html" class="nav-link">Contact Us</a>
+</nav>
+
+        <div class="header-right">
+            <button class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+            <button class="btn-icon" onclick="toggleTheme()" title="Toggle Dark Mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="overlay-bg" onclick="toggleMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+             <img src="Only CATE.png" alt="CATE" class="mobile-logo">
+             <button class="close-menu" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="mobile-links">
+    <a href="about.html" class="nav-link-mobile active" style="--i:1;"><i class="fa-solid fa-circle-info"></i> <span>About Us</span></a>
+    <a href="clients.html" class="nav-link-mobile" style="--i:2;"><i class="fa-solid fa-handshake"></i> <span>Our Clients</span></a>
+    <a href="why-us.html" class="nav-link-mobile" style="--i:3;"><i class="fa-solid fa-medal"></i> <span>Why Us?</span></a>
+    
+    <a href="our-work.html" class="nav-link-mobile" style="--i:4;">
+        <i class="fa-solid fa-briefcase"></i> <span>Our Work</span>
+    </a>
+
+    <a href="contact.html" class="nav-link-mobile" style="--i:5;"><i class="fa-solid fa-envelope"></i> <span>Contact Us</span></a>
+</div>
+    </div>
+
+    <div class="about-section">
+        <div class="watermark">01</div>
+        <div class="about-content">
+            <h2>About Us</h2>
+            <p>
+                <span class="brand-highlight">Compressed Air Technology Egypt (CATE)</span> 
+                is a specialized provider of compressed air solutions, delivering reliable, efficient, and high-quality systems to meet industrial and commercial needs. We offer end-to-end solutions including air compressors, air treatment, spare parts, and technical support, ensuring optimal performance and long-term value for our customers across Egypt.
+            </p>
+            <a href="#" class="btn-read-more">Read More <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="about-image-wrapper">
+            <div class="decor-line"></div>
+            <img src="about us .png" alt="About CATE Team" class="main-img" onerror="this.src='https://via.placeholder.com/400x400/006F8F/FFFFFF?text=About+Us'">
+            <div class="decor-circle"></div> 
+            <div class="decor-circle-blue"></div> 
+            <div class="decor-pill"></div> 
+        </div>
+    </div>
+
+    <div class="values-section">
+        <div class="values-header"><h2>Our Core Values</h2></div>
+        <div class="values-grid">
+            <div class="value-card">
+                <i class="fa-solid fa-handshake val-icon"></i>
+                <h3>Integrity</h3>
+                <p>Building trust through transparent and honest relationships with all our partners.</p>
+            </div>
+            <div class="value-card">
+                <i class="fa-solid fa-lightbulb val-icon"></i>
+                <h3>Innovation</h3>
+                <p>Bringing the latest global technologies from Atlas Copco to the Egyptian market.</p>
+            </div>
+            <div class="value-card">
+                <i class="fa-solid fa-headset val-icon"></i>
+                <h3>Excellence</h3>
+                <p>Commitment to superior service quality and 24/7 technical support.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="history-section">
+        <h2 class="history-title">Our History</h2>
+        
+        <div class="timeline">
+            <div class="timeline-container left">
+                <div class="year-badge">2004</div>
+                <div class="content">
+                    <h3>Company Established</h3>
+                    <p>CATE was founded with a vision to revolutionize the compressed air market in Egypt, starting with a core team of engineers dedicated to service excellence.</p>
+                    <div class="stats-row">
+                        <div class="stat-item"><span class="stat-number">4</span><span class="stat-label">Employees</span></div>
+                        <div class="stat-item"><span class="stat-number">1st</span><span class="stat-label">Release</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-container right">
+                <div class="year-badge">2010</div>
+                <div class="content">
+                    <h3>Atlas Copco Partnership</h3>
+                    <p>Became an authorized distributor for Atlas Copco, expanding our portfolio to include world-class industrial compressors and air treatment solutions.</p>
+                    <div class="stats-row">
+                        <div class="stat-item"><span class="stat-number">10+</span><span class="stat-label">Clients</span></div>
+                        <div class="stat-item"><span class="stat-number">2</span><span class="stat-label">Sectors</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-container left">
+                <div class="year-badge">2018</div>
+                <div class="content">
+                    <h3>Expansion & New Branches</h3>
+                    <p>Expanded our footprint to key industrial zones including 10th of Ramadan and Sadat City to ensure faster response times for our growing client base.</p>
+                    <div class="stats-row">
+                        <div class="stat-item"><span class="stat-number">3</span><span class="stat-label">Branches</span></div>
+                        <div class="stat-item"><span class="stat-number">50+</span><span class="stat-label">Employees</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-container right">
+                <div class="year-badge">2024</div>
+                <div class="content">
+                    <h3>Digital Transformation</h3>
+                    <p>Launched comprehensive digital asset management services and introduced IoT-enabled compressor monitoring for proactive maintenance.</p>
+                    <div class="stats-row">
+                        <div class="stat-item"><span class="stat-number">500+</span><span class="stat-label">Clients</span></div>
+                        <div class="stat-item"><span class="stat-number">24/7</span><span class="stat-label">Support</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-section">
+        <div class="footer-grid">
+            <div class="footer-col"><h4>Subscribe Now</h4><div class="subscribe-box"><input type="email" class="subscribe-input" placeholder="Enter your email"><button class="subscribe-btn">Submit</button></div></div>
+            <div class="footer-col"><h4>About Us</h4><p class="footer-text">CATE is organization is based on the principle of decentralized responsibilities and authorities. We create lasting results in a way that is economically and environmentally responsible.</p></div>
+            <div class="footer-col"><h4>Contact Us</h4><a href="mailto:info@cate-eg.com" class="footer-link">info@cate-eg.com</a><a href="tel:020021234567" class="footer-link">02.002.123.4567</a></div>
+        </div>
+        <div class="copyright">© Copyright 2025 www.cate-eg.com. All Rights Reserved | created by Abdelrahman khedr</div>
+    </div>
+
+    <script>
+        // Theme Logic
+        let currentTheme = localStorage.getItem('cate_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateThemeIcon();
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            localStorage.setItem('cate_theme', currentTheme);
+            updateThemeIcon();
+        }
+
+        function updateThemeIcon() {
+            const icon = document.querySelector('.btn-icon i');
+            if(currentTheme === 'dark') { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); } 
+            else { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); }
+        }
+
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.querySelector('.overlay-bg').classList.toggle('active');
+        }
+
+        // Scroll Reveal Script for History Timeline
+        function revealTimeline() {
+            var reveals = document.querySelectorAll(".timeline-container");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("visible");
+                }
+            }
+        }
+        window.addEventListener("scroll", revealTimeline);
+        revealTimeline(); // Trigger on load
+    </script>
+
+</body>
+</html>

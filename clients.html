@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CATE - Our Clients</title>
+    <link rel="icon" type="image/png" href="Only CATE.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #006F8F; --primary-dark: #005a75; --primary-light: #009ebf;
+            --accent-blue: #3b82f6; --bg-body: #f8fafc; --surface-color: #ffffff;
+            --text-main: #1e293b; --text-muted: #64748b; --border-color: #e2e8f0;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05); --shadow-md: 0 8px 30px rgba(0,0,0,0.08);
+            --dark-footer: #001f2b;
+            --accent-bg: rgba(0, 111, 143, 0.08);
+        }
+        [data-theme="dark"] {
+            --primary: #00d2be; --primary-dark: #00a090; --bg-body: #0f172a;
+            --surface-color: #1e293b; --text-main: #f1f5f9; --text-muted: #94a3b8;
+            --border-color: #334155; --shadow-md: 0 8px 30px rgba(0,0,0,0.4); --dark-footer: #0b1116;
+            --accent-bg: rgba(0, 210, 190, 0.1);
+        }
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'Inter', 'Cairo', sans-serif; background-color: var(--bg-body); color: var(--text-main); margin: 0; padding: 0; transition: background-color 0.4s ease, color 0.4s ease; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background-color: var(--surface-color); padding: 15px 5%; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow-sm); border-bottom: 1px solid var(--border-color); transition: 0.3s; }
+        .logo-area { display: flex; align-items: center; cursor: pointer; transition: transform 0.3s; }
+        .logo-area:hover { transform: scale(1.05); }
+        .cate-logo { height: 50px; object-fit: contain; }
+        
+        .main-nav { display: flex; gap: 30px; }
+        .nav-link { text-decoration: none; color: var(--text-muted); font-weight: 500; font-size: 0.95rem; transition: 0.3s; position: relative; }
+        .nav-link:hover, .nav-link.active { color: var(--primary); }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--primary); transition: width 0.3s; }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        button { border: none; outline: none; cursor: pointer; font-family: inherit; transition: 0.3s; }
+        .btn-icon { background: transparent; color: var(--text-main); width: 45px; height: 45px; border-radius: 50%; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; transition: 0.3s; border: 1px solid var(--border-color); cursor: pointer; }
+        .btn-icon:hover { background: var(--accent-bg); color: var(--primary); border-color: var(--primary); transform: rotate(15deg); }
+
+        .menu-btn { display: none; background: transparent; font-size: 1.8rem; color: var(--text-main); border: none; cursor: pointer; transition: 0.3s; }
+        .menu-btn:hover { color: var(--primary); transform: scale(1.1); }
+        .mobile-menu { position: fixed; top: 0; right: -320px; width: 320px; height: 100vh; background: var(--surface-color); box-shadow: -10px 0 30px rgba(0,0,0,0.1); z-index: 1001; transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1); padding: 30px; display: flex; flex-direction: column; gap: 40px; border-top-left-radius: 30px; border-bottom-left-radius: 30px; }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; }
+        .mobile-logo { height: 40px; filter: grayscale(100%); opacity: 0.7; }
+        .close-menu { font-size: 1.5rem; color: var(--text-muted); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--accent-bg); }
+        .mobile-links { display: flex; flex-direction: column; gap: 15px; }
+        
+        /* Mobile Link Styles */
+        .nav-link-mobile { display: flex; align-items: center; gap: 15px; text-decoration: none; color: var(--text-main); font-size: 1.2rem; font-weight: 700; padding: 15px; border-radius: 15px; transition: 0.3s; opacity: 0; transform: translateX(30px); }
+        .nav-link-mobile i { color: var(--primary); font-size: 1.4rem; width: 30px; text-align: center; }
+        
+        .mobile-menu.active .nav-link-mobile { opacity: 1; transform: translateX(0); transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.77, 0, 0.175, 1); transition-delay: calc(0.1s * var(--i)); }
+        
+        /* FIXED: Hover and Active State for Mobile */
+        .nav-link-mobile:hover, 
+        .mobile-menu.active .nav-link-mobile.active { /* Specificity fix */
+            background: var(--accent-bg); color: var(--primary); transform: translateX(10px); 
+        }
+        .nav-link-mobile:hover i,
+        .mobile-menu.active .nav-link-mobile.active i { transform: scale(1.2); }
+
+        .overlay-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.4s; backdrop-filter: blur(3px); }
+        .overlay-bg.active { opacity: 1; visibility: visible; }
+
+        .clients-hero { background: linear-gradient(135deg, #2c4a63 0%, #1a324b 100%); padding: 100px 5%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; min-height: 50vh; color: white; }
+        .watermark { position: absolute; top: 50%; right: 5%; transform: translateY(-50%); font-size: 25rem; font-weight: 900; color: rgba(255, 255, 255, 0.03); line-height: 1; z-index: 0; pointer-events: none; }
+        .clients-container { max-width: 1200px; width: 100%; display: flex; align-items: center; gap: 80px; position: relative; z-index: 1; }
+        .logo-wrapper { flex: 1; display: flex; justify-content: flex-end; opacity: 0; transform: translateX(-50px); animation: slideInLeft 1s ease forwards; }
+        .logo-wrapper img { max-width: 300px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); transition: transform 0.5s ease; }
+        .logo-wrapper img:hover { transform: scale(1.05) rotate(-2deg); }
+        .text-wrapper { flex: 1.5; text-align: left; opacity: 0; transform: translateX(50px); animation: slideInRight 1s ease forwards 0.3s; }
+        .text-wrapper h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 20px; letter-spacing: -1px; }
+        .text-wrapper p { font-size: 1.2rem; line-height: 1.8; color: rgba(255, 255, 255, 0.9); max-width: 600px; }
+
+        .category-nav-bar { position: sticky; top: 80px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); z-index: 900; border-bottom: 1px solid var(--border-color); padding: 15px 0; overflow-x: auto; white-space: nowrap; display: flex; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        [data-theme="dark"] .category-nav-bar { background: rgba(30, 41, 59, 0.95); }
+        .cat-link { display: inline-block; padding: 8px 20px; margin: 0 5px; text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; border-radius: 20px; transition: 0.3s; border: 1px solid transparent; }
+        .cat-link:hover { color: var(--primary); background: var(--accent-bg); }
+
+        .clients-categories-section { padding: 60px 5%; background-color: var(--bg-body); }
+        .category-block { max-width: 1200px; margin: 0 auto 80px; opacity: 0; animation: fadeInUp 0.8s ease forwards; scroll-margin-top: 160px; }
+        .category-block:nth-child(2) { animation-delay: 0.1s; }
+        .category-block:nth-child(3) { animation-delay: 0.2s; }
+        .category-title { text-align: center; margin-bottom: 30px; position: relative; }
+        .category-title h3 { font-size: 1.6rem; color: var(--text-main); font-weight: 800; display: inline-block; padding-bottom: 10px; border-bottom: 4px solid var(--primary); }
+
+        .slider-wrapper-main { position: relative; background: var(--surface-color); padding: 30px 0; border-radius: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); }
+        .slider-wrapper-main::before, .slider-wrapper-main::after { content: ''; position: absolute; top: 0; bottom: 0; width: 100px; z-index: 2; pointer-events: none; }
+        .slider-wrapper-main::before { left: 0; background: linear-gradient(to right, var(--surface-color), transparent); }
+        .slider-wrapper-main::after { right: 0; background: linear-gradient(to left, var(--surface-color), transparent); }
+
+        .logos-scroll-wrapper { display: flex; gap: 25px; overflow-x: auto; padding: 20px 50px; width: 100%; scrollbar-width: none; }
+        .logos-scroll-wrapper::-webkit-scrollbar { display: none; }
+
+        .scroll-btn { background: var(--surface-color); border: 1px solid var(--border-color); color: var(--primary); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; position: absolute; top: 50%; transform: translateY(-50%); z-index: 5; box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 1.1rem; }
+        .scroll-btn:hover { background: var(--primary); color: white; box-shadow: 0 8px 20px rgba(0, 111, 143, 0.3); transform: translateY(-50%) scale(1.1); }
+        .scroll-btn.left { left: -22px; } .scroll-btn.right { right: -22px; }
+
+        .client-logo-card { min-width: 170px; height: 180px; background: var(--bg-body); border-radius: 16px; border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: grab; user-select: none; padding: 15px; position: relative; }
+        .client-logo-card:hover { background: white; border-color: var(--primary); transform: translateY(-8px); box-shadow: 0 10px 20px rgba(0, 111, 143, 0.15); }
+        .client-logo-card img { max-width: 100%; max-height: 80px; object-fit: contain; filter: grayscale(100%) opacity(0.6); transition: all 0.3s ease; pointer-events: none; }
+        .client-logo-card:hover img { filter: grayscale(0%) opacity(1); transform: scale(1.05); }
+        .client-name { margin-top: 10px; font-size: 0.85rem; font-weight: 700; color: var(--text-main); text-align: center; }
+        .logo-box { width: 100%; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 8px; transition: 0.3s; }
+        .sortable-ghost { opacity: 0.4; background: var(--accent-bg); border: 2px dashed var(--primary); }
+        .delete-btn { position: absolute; top: -8px; right: -8px; width: 25px; height: 25px; background: #ef4444; color: white; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4); opacity: 0; transition: 0.3s; z-index: 10; }
+        .client-logo-card:hover .delete-btn { opacity: 1; transform: scale(1.1); }
+        .delete-btn:hover { background: #dc2626; }
+
+        .join-cta-section { background: linear-gradient(135deg, var(--primary) 0%, var(--accent-blue) 100%); color: white; text-align: center; padding: 60px 20px; margin: 40px auto 0; max-width: 1000px; border-radius: 30px; position: relative; overflow: hidden; box-shadow: var(--shadow-glow); }
+        .join-cta-content { position: relative; z-index: 2; }
+        .join-cta-section h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 15px; }
+        .join-cta-section p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 30px; }
+        .btn-join { background: white; color: var(--primary); padding: 12px 35px; border-radius: 50px; font-weight: 700; text-decoration: none; display: inline-block; transition: 0.3s; }
+        .btn-join:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--primary); color: white; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: 0.3s; opacity: 0; pointer-events: none; z-index: 1000; }
+        .back-to-top.show { opacity: 1; pointer-events: all; }
+        .back-to-top:hover { background: var(--primary-dark); transform: translateY(-5px); }
+
+        .footer-section { background-color: var(--dark-footer); color: #fff; padding: 60px 20px 40px; margin-top: 80px; }
+        .footer-grid { max-width: 1150px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 50px; text-align: left; }
+        .footer-col h4 { font-size: 1.1rem; margin-bottom: 25px; color: var(--primary-light); font-weight: 700; text-transform: uppercase; }
+        .footer-text, .footer-link { display: block; color: rgba(255,255,255,0.7); font-size: 0.95rem; line-height: 1.8; margin-bottom: 12px; text-decoration: none; transition: 0.3s; }
+        .footer-link:hover { color: var(--primary-light); transform: translateX(5px); }
+        .subscribe-box { display: flex; border-bottom: 2px solid rgba(255,255,255,0.2); }
+        .subscribe-input { background: transparent; border: none; color: white; padding: 12px 0; width: 100%; outline: none; font-size: 1rem; }
+        .subscribe-btn { background: transparent; border: none; color: var(--primary-light); font-weight: 700; cursor: pointer; text-transform: uppercase; }
+        .copyright { text-align: center; margin-top: 60px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 900px) {
+            .clients-container { flex-direction: column; text-align: center; gap: 40px; }
+            .logo-wrapper { justify-content: center; }
+            .text-wrapper { text-align: center; }
+            .watermark { font-size: 15rem; right: 50%; transform: translateX(50%); top: 10%; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .subscribe-box { justify-content: center; }
+            .main-nav { display: none; }
+            .slider-container { padding: 20px 35px; } 
+            .scroll-btn { width: 30px; height: 30px; font-size: 0.9rem; }
+            .category-nav-bar { justify-content: flex-start; padding-left: 20px; }
+            .menu-btn { display: block; }
+        }
+
+        /* --- ADMIN TEMP TOOLS --- */
+        #adminBtn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: #ef4444; color: white; border: none; font-size: 2rem; cursor: pointer; z-index: 9999; box-shadow: 0 10px 20px rgba(239,68,68,0.4); transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+        #adminBtn:hover { transform: scale(1.1) rotate(90deg); }
+        #catModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: var(--surface-color); padding: 30px; border-radius: 20px; width: 90%; max-width: 500px; text-align: center; max-height: 80vh; overflow-y: auto; box-shadow: var(--shadow-md); }
+        .modal-title { font-size: 1.5rem; margin-bottom: 20px; color: var(--text-main); font-weight: 800; }
+        .preview-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px; max-height: 200px; overflow-y: auto; }
+        .preview-thumb { width: 60px; height: 60px; object-fit: contain; border: 1px solid var(--border-color); border-radius: 8px; background: white; padding: 5px; }
+        .cat-btn { display: block; width: 100%; padding: 12px; margin-bottom: 10px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 10px; cursor: pointer; font-size: 1rem; color: var(--text-main); transition: 0.2s; font-weight: 600; }
+        .cat-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .btn-clear { background: #ef4444; color: white; border:none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 20px; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area" onclick="goHome()" title="Go Home">
+            <img src="Only CATE.png" alt="CATE" class="cate-logo">
+        </div>
+        <nav class="main-nav">
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="clients.html" class="nav-link active">Our Clients</a>
+            <a href="why-us.html" class="nav-link">Why Us?</a>
+            <a href="our-work.html" class="nav-link">Our Work</a>
+            <a href="contact.html" class="nav-link">Contact Us</a>
+        </nav>
+        <div class="header-right">
+            <button class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+            <button class="btn-icon" onclick="toggleTheme()" title="Toggle Dark Mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="overlay-bg" onclick="toggleMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+             <img src="Only CATE.png" alt="CATE" class="mobile-logo">
+             <button class="close-menu" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="mobile-links">
+            <a href="about.html" class="nav-link-mobile" style="--i:1;"><i class="fa-solid fa-circle-info"></i> <span>About Us</span></a>
+            <a href="clients.html" class="nav-link-mobile active" style="--i:2;"><i class="fa-solid fa-handshake"></i> <span>Our Clients</span></a>
+            <a href="why-us.html" class="nav-link-mobile" style="--i:3;"><i class="fa-solid fa-medal"></i> <span>Why Us?</span></a>
+            <a href="our-work.html" class="nav-link-mobile" style="--i:4;"><i class="fa-solid fa-people-group"></i> <span>Our Work</span></a>
+            <a href="contact.html" class="nav-link-mobile" style="--i:5;"><i class="fa-solid fa-envelope"></i> <span>Contact Us</span></a>
+        </div>
+    </div>
+
+    <div class="category-nav-bar">
+        <a href="#cat-packaging" class="cat-link">Packaging</a>
+        <a href="#cat-cars" class="cat-link">Cars & Transport</a>
+        <a href="#cat-food" class="cat-link">Food & Beverage</a>
+        <a href="#cat-electrical" class="cat-link">Electrical</a>
+        <a href="#cat-metal" class="cat-link">Metal & Steel</a>
+        <a href="#cat-medical" class="cat-link">Medical</a>
+        <a href="#cat-chemical" class="cat-link">Chemicals</a>
+        <a href="#cat-public" class="cat-link">Public Services</a>
+        <a href="#cat-construction" class="cat-link">Construction</a>
+        <a href="#cat-textile" class="cat-link">Textiles</a>
+    </div>
+
+    <div class="clients-hero">
+        <div class="watermark">02</div>
+        <div class="clients-container">
+            <div class="logo-wrapper">
+                <img src="Only CATE.png" alt="CATE Logo" style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 10px;">
+            </div>
+            <div class="text-wrapper">
+                <h1>Our Valued Clients</h1>
+                <p>Our clients come from various industries and regions, each contributing to our journey of growth and success. We take pride in building long-lasting partnerships.</p>
+            </div>
+        </div>
+    </div>
+
+    <section class="clients-categories-section">
+        
+        <div id="cat-packaging" class="category-block">
+            <div class="category-title"><h3>Packaging, Paper & Plastic</h3></div>
+            <div class="slider-wrapper-main">
+                <button class="scroll-btn left" onmouseover="startScrolling('slider1', -1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="logos-scroll-wrapper sortable-slider" id="slider1"></div>
+                <button class="scroll-btn right" onmouseover="startScrolling('slider1', 1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div id="cat-cars" class="category-block">
+            <div class="category-title"><h3>Cars, Spare Parts & Transportation</h3></div>
+            <div class="slider-wrapper-main">
+                <button class="scroll-btn left" onmouseover="startScrolling('slider2', -1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="logos-scroll-wrapper sortable-slider" id="slider2"></div>
+                <button class="scroll-btn right" onmouseover="startScrolling('slider2', 1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div id="cat-food" class="category-block">
+            <div class="category-title"><h3>Food & Beverage Industries</h3></div>
+            <div class="slider-wrapper-main">
+                <button class="scroll-btn left" onmouseover="startScrolling('slider3', -1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="logos-scroll-wrapper sortable-slider" id="slider3"></div>
+                <button class="scroll-btn right" onmouseover="startScrolling('slider3', 1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div id="cat-electrical" class="category-block">
+            <div class="category-title"><h3>Electrical & Electronic Industries</h3></div>
+            <div class="slider-wrapper-main">
+                <button class="scroll-btn left" onmouseover="startScrolling('slider4', -1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="logos-scroll-wrapper sortable-slider" id="slider4"></div>
+                <button class="scroll-btn right" onmouseover="startScrolling('slider4', 1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div id="cat-metal" class="category-block">
+            <div class="category-title"><h3>Metal, Steel & Cement Industries</h3></div>
+            <div class="slider-wrapper-main">
+                <button class="scroll-btn left" onmouseover="startScrolling('slider5', -1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="logos-scroll-wrapper sortable-slider" id="slider5"></div>
+                <button class="scroll-btn right" onmouseover="startScrolling('slider5', 1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div id="cat-medical" class="category-block">
+            <div class="category-title"><h3>Medical Sector</h3></div>
+            <div class="slider-wrapper-main">
+                <button class="scroll-btn left" onmouseover="startScrolling('slider6', -1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="logos-scroll-wrapper sortable-slider" id="slider6"></div>
+                <button class="scroll-btn right" onmouseover="startScrolling('slider6', 1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div id="cat-chemical" class="category-block">
+            <div class="category-title"><h3>Chemicals and Energy</h3></div>
+            <div class="slider-wrapper-main">
+                <button class="scroll-btn left" onmouseover="startScrolling('slider7', -1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="logos-scroll-wrapper sortable-slider" id="slider7"></div>
+                <button class="scroll-btn right" onmouseover="startScrolling('slider7', 1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div id="cat-public" class="category-block">
+            <div class="category-title"><h3>Public Facilities and Services</h3></div>
+            <div class="slider-wrapper-main">
+                <button class="scroll-btn left" onmouseover="startScrolling('slider8', -1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="logos-scroll-wrapper sortable-slider" id="slider8"></div>
+                <button class="scroll-btn right" onmouseover="startScrolling('slider8', 1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div id="cat-construction" class="category-block">
+            <div class="category-title"><h3>Contracting and Construction</h3></div>
+            <div class="slider-wrapper-main">
+                <button class="scroll-btn left" onmouseover="startScrolling('slider9', -1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="logos-scroll-wrapper sortable-slider" id="slider9"></div>
+                <button class="scroll-btn right" onmouseover="startScrolling('slider9', 1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div id="cat-textile" class="category-block">
+            <div class="category-title"><h3>Textiles and Clothing</h3></div>
+            <div class="slider-wrapper-main">
+                <button class="scroll-btn left" onmouseover="startScrolling('slider10', -1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="logos-scroll-wrapper sortable-slider" id="slider10"></div>
+                <button class="scroll-btn right" onmouseover="startScrolling('slider10', 1)" onmouseout="stopScrolling()"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="join-cta-section">
+        <div class="join-cta-content">
+            <h2>Partner with Excellence</h2>
+            <p>Join over 500+ satisfied clients across Egypt who trust CATE for their air solution needs.</p>
+            <a href="index.html" class="btn-join">Contact Us Today</a>
+        </div>
+    </div>
+
+    <button id="backToTop" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <div class="footer-section">
+        <div class="footer-grid">
+            <div class="footer-col"><h4>Subscribe Now</h4><div class="subscribe-box"><input type="email" class="subscribe-input" placeholder="Enter your email"><button class="subscribe-btn">Submit</button></div></div>
+            <div class="footer-col"><h4>About Us</h4><p class="footer-text">CATE is organization is based on the principle of decentralized responsibilities and authorities.</p></div>
+            <div class="footer-col"><h4>Contact Us</h4><a href="mailto:info@cate-eg.com" class="footer-link">info@cate-eg.com</a><a href="tel:020021234567" class="footer-link">02.002.123.4567</a></div>
+        </div>
+        <div class="copyright">© Copyright 2025 www.cate-eg.com. All Rights Reserved | created by Abdelrahman khedr</div>
+    </div>
+
+    <button id="adminBtn" onclick="document.getElementById('fileInput').click()" title="Add Client Logos"><i class="fa-solid fa-plus"></i></button>
+    <input type="file" id="fileInput" style="display: none;" accept="image/*" multiple>
+
+    <div id="catModal">
+        <div class="modal-content">
+            <h3 class="modal-title">Select Category for <span id="imgCount"></span> Images</h3>
+            <div id="previewContainer" class="preview-container"></div>
+            <div id="catButtons"></div>
+            <button class="cat-btn" style="background:#475569; color:white; margin-top:10px;" onclick="closeModal()">Cancel</button>
+            <hr style="margin:20px 0; opacity:0.2;">
+            <button class="btn-clear" onclick="clearAllData()">⚠️ Clear All Saved Data</button>
+        </div>
+    </div>
+
+    <script>
+        /* =========================================
+           INDEXED DB LOGIC (FINAL_VERSION_NO_AUTO)
+           ========================================= */
+        const categories = [
+            { name: "Packaging, Paper & Plastic", id: "slider1" },
+            { name: "Cars, Spare Parts & Transportation", id: "slider2" },
+            { name: "Food & Beverage Industries", id: "slider3" },
+            { name: "Electrical & Electronic Industries", id: "slider4" },
+            { name: "Metal, Steel & Cement Industries", id: "slider5" },
+            { name: "Medical Sector", id: "slider6" },
+            { name: "Chemicals and Energy", id: "slider7" },
+            { name: "Public Facilities and Services", id: "slider8" },
+            { name: "Contracting and Construction", id: "slider9" },
+            { name: "Textiles and Clothing", id: "slider10" }
+        ];
+
+        let pendingImages = []; 
+        let db;
+
+        // Force a NEW DB V7 (Standard - No Auto Detect)
+        const request = indexedDB.open("CATE_Final_Standard", 1);
+
+        request.onupgradeneeded = function(event) {
+            db = event.target.result;
+            const objectStore = db.createObjectStore("clients", { keyPath: "id" });
+            objectStore.createIndex("orderIdx", "order", { unique: false });
+        };
+
+        request.onsuccess = function(event) {
+            db = event.target.result;
+            loadClientsFromDB(); 
+            initSortable();
+        };
+
+        request.onerror = function(event) {
+            console.error("Database error: " + event.target.errorCode);
+        };
+
+        window.addEventListener('DOMContentLoaded', () => { renderCatButtons(); });
+
+        function initSortable() {
+            const sliders = document.querySelectorAll('.sortable-slider');
+            sliders.forEach(slider => {
+                new Sortable(slider, {
+                    animation: 150,
+                    ghostClass: 'sortable-ghost',
+                    direction: 'horizontal',
+                    onEnd: function (evt) {
+                        const cards = evt.to.children;
+                        const newOrderIds = Array.from(cards).map(card => Number(card.dataset.clientId));
+                        updateOrderInDB(newOrderIds);
+                    }
+                });
+            });
+        }
+
+        function updateOrderInDB(orderedIds) {
+            const transaction = db.transaction(["clients"], "readwrite");
+            const objectStore = transaction.objectStore("clients");
+            orderedIds.forEach((id, index) => {
+                const req = objectStore.get(id);
+                req.onsuccess = function(e) {
+                    const data = e.target.result;
+                    if (data) {
+                        data.order = index;
+                        objectStore.put(data);
+                    }
+                };
+            });
+        }
+
+        function renderCatButtons() {
+            const container = document.getElementById('catButtons');
+            container.innerHTML = '';
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'cat-btn';
+                btn.innerText = cat.name;
+                btn.onclick = () => saveClientsBatch(cat.id);
+                container.appendChild(btn);
+            });
+        }
+
+        // Standard Resize + Compression (NO DETECTION)
+        const readImage = (file) => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const maxWidth = 300; 
+                        const scaleSize = maxWidth / img.width;
+                        canvas.width = maxWidth;
+                        canvas.height = img.height * scaleSize;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve({
+                            name: file.name.replace(/\.[^/.]+$/, ""),
+                            img: canvas.toDataURL('image/png', 0.85)
+                        });
+                    };
+                };
+                reader.readAsDataURL(file);
+            });
+        };
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            if (!files.length) return;
+            Promise.all(files.map(readImage)).then(images => {
+                pendingImages = images;
+                showPreviewModal();
+            });
+            e.target.value = ''; 
+        });
+
+        function showPreviewModal() {
+            const container = document.getElementById('previewContainer');
+            container.innerHTML = '';
+            document.getElementById('imgCount').innerText = pendingImages.length;
+            pendingImages.forEach(imgObj => {
+                const img = document.createElement('img');
+                img.src = imgObj.img;
+                img.className = 'preview-thumb';
+                container.appendChild(img);
+            });
+            document.getElementById('catModal').style.display = 'flex';
+        }
+
+        function saveClientsBatch(sliderId) {
+            const transaction = db.transaction(["clients"], "readwrite");
+            const objectStore = transaction.objectStore("clients");
+            
+            pendingImages.forEach((imgObj, i) => {
+                const client = {
+                    id: Date.now() + i + Math.random(), 
+                    name: imgObj.name,
+                    img: imgObj.img,
+                    sliderId: sliderId,
+                    order: Date.now()
+                };
+                
+                objectStore.add(client);
+                appendClientToDom(client);
+            });
+            
+            closeModal();
+        }
+
+        function deleteClient(id, btnElement) {
+            if(!confirm("Delete this logo?")) return;
+            const transaction = db.transaction(["clients"], "readwrite");
+            const objectStore = transaction.objectStore("clients");
+            objectStore.delete(id);
+            const card = btnElement.closest('.client-logo-card');
+            if(card) card.remove();
+        }
+
+        function loadClientsFromDB() {
+            const objectStore = db.transaction("clients").objectStore("clients");
+            const index = objectStore.index("orderIdx");
+            index.openCursor().onsuccess = function(event) {
+                const cursor = event.target.result;
+                if (cursor) {
+                    appendClientToDom(cursor.value);
+                    cursor.continue();
+                }
+            };
+        }
+
+        function appendClientToDom(client) {
+            const container = document.getElementById(client.sliderId);
+            if (!container) return;
+            const card = document.createElement('div');
+            card.className = 'client-logo-card';
+            card.dataset.clientId = client.id;
+            
+            card.innerHTML = `
+                <button class="delete-btn" onclick="deleteClient(${client.id}, this)">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="logo-box"><img src="${client.img}" alt="${client.name}"></div>
+                <span class="client-name">${client.name}</span>
+            `;
+            container.appendChild(card);
+        }
+
+        function closeModal() {
+            document.getElementById('catModal').style.display = 'none';
+            pendingImages = [];
+        }
+
+        function clearAllData() {
+            if(confirm("Delete ALL data?")) {
+                const req = indexedDB.deleteDatabase("CATE_Final_Standard");
+                req.onsuccess = function () { location.reload(); };
+            }
+        }
+
+        /* --- UI & Scroll --- */
+        if (localStorage.getItem('cate_theme') === 'dark') { document.documentElement.setAttribute('data-theme', 'dark'); }
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('cate_theme', next);
+        }
+        function goHome() { window.location.href = 'index.html'; }
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.querySelector('.overlay-bg').classList.toggle('active');
+        }
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTop');
+            if (window.scrollY > 300) btn.classList.add('show');
+            else btn.classList.remove('show');
+        });
+        
+        let animationId;
+        const scrollSpeed = 5;
+        const performScroll = (slider, direction) => {
+            slider.scrollLeft += direction * scrollSpeed;
+            animationId = requestAnimationFrame(() => performScroll(slider, direction));
+        }
+        function startScrolling(sliderId, direction) {
+             stopScrolling(); 
+             const slider = document.getElementById(sliderId);
+             if (slider) performScroll(slider, direction);
+        }
+        function stopScrolling() {
+             if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+        }
+    </script>
+
+</body>
+</html>

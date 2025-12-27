@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CATE - Premium Maintenance</title>
+    <link rel="icon" type="image/png" href="Only CATE.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- Modern Variables --- */
+        :root {
+            --primary: #006F8F;
+            --primary-dark: #005a75;
+            --accent: #3b82f6;
+            --bg-body: #f0f4f8;
+            --surface: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow-card: 0 10px 40px -10px rgba(0,0,0,0.08);
+            --dark-footer: #001f2b;
+            --accent-bg: rgba(0, 111, 143, 0.08);
+
+            /* Gradient Colors for Icons */
+            --g-blue: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            --g-purple: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            --g-orange: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --g-green: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --g-red: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            --g-main: linear-gradient(135deg, #006F8F 0%, #0ea5e9 100%);
+        }
+
+        [data-theme="dark"] {
+            --primary: #00d2be; --bg-body: #0f172a; --surface: #1e293b;
+            --text-main: #f8fafc; --text-muted: #94a3b8; --border: #334155;
+            --dark-footer: #0b1116; --accent-bg: rgba(0, 210, 190, 0.1);
+            --shadow-card: 0 10px 40px -10px rgba(0,0,0,0.5);
+        }
+
+        * { box-sizing: border-box; }
+        body { font-family: 'Outfit', 'Cairo', sans-serif; background-color: var(--bg-body); color: var(--text-main); margin: 0; padding: 0; transition: 0.4s; overflow-x: hidden; }
+
+        /* --- Keyframes for Animations --- */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+        @keyframes pulse-icon { 0% { box-shadow: 0 0 0 0 rgba(0, 111, 143, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(0, 111, 143, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 111, 143, 0); } }
+
+        /* --- Header --- */
+        header { 
+            background: rgba(255,255,255,0.8); backdrop-filter: blur(12px); 
+            padding: 15px 5%; display: flex; align-items: center; justify-content: space-between; 
+            position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); 
+        }
+        [data-theme="dark"] header { background: rgba(30,41,59,0.8); border-bottom-color: rgba(255,255,255,0.05); }
+        
+        .logo-area { display: flex; align-items: center; cursor: pointer; transition: transform 0.3s; }
+        .logo-area:hover { transform: scale(1.05); }
+        .cate-logo { height: 50px; object-fit: contain; }
+        
+        .main-nav { display: flex; gap: 30px; }
+        .nav-link { text-decoration: none; color: var(--text-muted); font-weight: 600; transition: 0.3s; position: relative; }
+        .nav-link:hover, .nav-link.active { color: var(--primary); }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 3px; bottom: -6px; left: 0; background-color: var(--primary); transition: width 0.3s; }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        button { border: none; outline: none; cursor: pointer; font-family: inherit; transition: 0.3s; }
+        .btn-icon { background: transparent; border: 1px solid var(--border); color: var(--text-main); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .btn-icon:hover { background: var(--accent-bg); color: var(--primary); border-color: var(--primary); transform: rotate(180deg); }
+
+        /* Mobile Menu Button */
+        .menu-btn { display: none; background: transparent; font-size: 1.8rem; color: var(--text-main); border: none; cursor: pointer; transition: 0.3s; }
+        .menu-btn:hover { color: var(--primary); transform: scale(1.1); }
+
+        /* --- MOBILE MENU STYLES --- */
+        .mobile-menu {
+            position: fixed; top: 0; right: -320px; width: 320px; height: 100vh;
+            background: var(--surface); 
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            z-index: 1001; 
+            transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+            padding: 30px; display: flex; flex-direction: column; gap: 40px;
+            border-top-left-radius: 30px; border-bottom-left-radius: 30px;
+        }
+        .mobile-menu.active { right: 0; }
+        
+        .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; }
+        .mobile-logo { height: 40px; filter: grayscale(100%); opacity: 0.7; }
+        .close-menu {
+            font-size: 1.5rem; color: var(--text-muted); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--accent-bg);
+        }
+        .close-menu:hover { background: var(--primary); color: white; transform: rotate(90deg); }
+        
+        .mobile-links { display: flex; flex-direction: column; gap: 15px; }
+        .nav-link-mobile {
+            display: flex; align-items: center; gap: 15px;
+            text-decoration: none; color: var(--text-main);
+            font-size: 1.2rem; font-weight: 700; padding: 15px;
+            border-radius: 15px; transition: 0.3s;
+            opacity: 0; transform: translateX(30px);
+        }
+        .nav-link-mobile i { color: var(--primary); font-size: 1.4rem; width: 30px; text-align: center; transition: 0.3s; }
+        
+        .nav-link-mobile:hover, .nav-link-mobile.active { background: var(--accent-bg); color: var(--primary); transform: translateX(10px); }
+        .nav-link-mobile:hover i { transform: scale(1.2); }
+        
+        .mobile-menu.active .nav-link-mobile {
+            opacity: 1; transform: translateX(0);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            transition-delay: calc(0.1s * var(--i));
+        }
+
+        .overlay-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0;
+            visibility: hidden; transition: 0.4s; backdrop-filter: blur(3px);
+        }
+        .overlay-bg.active { opacity: 1; visibility: visible; }
+
+        /* --- MAINTENANCE LAYOUT --- */
+        .maint-container {
+            max-width: 1350px; margin: 0 auto; padding: 80px 5%;
+            display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 80px;
+            align-items: center; min-height: 85vh; position: relative;
+        }
+
+        .bg-blur { position: absolute; filter: blur(90px); z-index: -1; opacity: 0.5; border-radius: 50%; }
+        .blur-1 { width: 400px; height: 400px; background: rgba(0, 111, 143, 0.15); top: -100px; right: -100px; }
+        .blur-2 { width: 300px; height: 300px; background: rgba(59, 130, 246, 0.15); bottom: 50px; left: -100px; }
+
+        /* --- LEFT CONTENT --- */
+        .text-content { display: flex; flex-direction: column; }
+
+        .page-title {
+            font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 40px;
+            background: linear-gradient(135deg, var(--text-main) 30%, var(--primary) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            opacity: 0; animation: fadeUp 0.8s ease forwards;
+        }
+
+        .section-header {
+            font-size: 1.1rem; font-weight: 700; margin: 30px 0 20px; color: var(--text-main);
+            display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px;
+            opacity: 0; animation: fadeUp 0.8s ease forwards 0.2s;
+        }
+        .section-header::before { content: ''; width: 20px; height: 3px; background: var(--primary); border-radius: 10px; }
+
+        /* --- 1. BENEFITS (Staggered Entrance) --- */
+        .benefits-list { list-style: none; padding: 0; margin-bottom: 40px; }
+        .benefits-list li {
+            display: flex; align-items: flex-start; gap: 15px; margin-bottom: 12px;
+            font-size: 1.05rem; color: var(--text-muted); padding: 10px 15px;
+            border-radius: 12px; transition: 0.3s; line-height: 1.5;
+            opacity: 0; animation: fadeUp 0.6s ease forwards;
+        }
+        .benefits-list li:nth-child(1) { animation-delay: 0.3s; }
+        .benefits-list li:nth-child(2) { animation-delay: 0.4s; }
+        .benefits-list li:nth-child(3) { animation-delay: 0.5s; }
+        .benefits-list li:nth-child(4) { animation-delay: 0.6s; }
+        
+        .benefits-list li:hover { background: rgba(255,255,255,0.5); transform: translateX(10px); color: var(--text-main); }
+        [data-theme="dark"] .benefits-list li:hover { background: rgba(255,255,255,0.05); }
+        
+        .check-box {
+            width: 24px; height: 24px; background: rgba(16, 185, 129, 0.15); border-radius: 6px;
+            display: flex; align-items: center; justify-content: center; color: #10b981; font-size: 0.8rem; margin-top: 2px; flex-shrink: 0;
+        }
+
+        /* --- 2. SERVICES (3D Tilt & Glow Icons) --- */
+        .services-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 40px; 
+            opacity: 0; animation: fadeUp 0.8s ease forwards 0.4s;
+        }
+        .service-card {
+            background: var(--surface); border: 1px solid var(--border); padding: 15px;
+            border-radius: 16px; display: flex; align-items: flex-start; gap: 15px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: default;
+            transform-style: preserve-3d; transform: perspective(1000px);
+        }
+        .service-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: var(--shadow-card); border-color: var(--primary); }
+        
+        .s-icon {
+            width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.1rem; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top: 3px;
+            transition: 0.3s; position: relative;
+        }
+        /* Icon Glow & Pulse on Hover */
+        .service-card:hover .s-icon { animation: pulse-icon 1.5s infinite; transform: translateZ(20px); }
+
+        .s-blue { background: var(--g-blue); }
+        .s-purple { background: var(--g-purple); }
+        .s-green { background: var(--g-green); }
+        .s-orange { background: var(--g-orange); }
+        .s-red { background: var(--g-red); }
+
+        .s-info h4 { margin: 0 0 5px 0; font-size: 0.95rem; font-weight: 700; color: var(--text-main); transition: 0.3s; }
+        .s-info p { margin: 0; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+        .service-card:hover h4 { color: var(--primary); }
+
+        /* --- 3. PLANS --- */
+        .plans-wrapper { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 40px; 
+            opacity: 0; animation: fadeUp 0.8s ease forwards 0.5s;
+        }
+        .plan-card-item {
+            padding: 15px; border-radius: 12px; border: 1px solid var(--border);
+            background: var(--surface); color: var(--text-muted); font-weight: 600; font-size: 0.95rem;
+            cursor: pointer; transition: 0.3s; text-align: center; border-left: 4px solid var(--primary);
+            position: relative; overflow: hidden;
+        }
+        .plan-card-item::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        .plan-card-item:hover { background: var(--primary); color: white; transform: translateY(-3px); border-color: var(--primary); }
+        .plan-card-item:hover::before { left: 100%; }
+        
+        /* --- CTA Button (Premium Shimmer) --- */
+        .btn-modern {
+            background: var(--g-main); color: white; padding: 18px 45px; font-size: 1.1rem; font-weight: 700;
+            border-radius: 16px; border: none; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 12px;
+            opacity: 0; animation: fadeUp 0.8s ease forwards 0.6s; box-shadow: 0 10px 20px rgba(0, 111, 143, 0.2);
+            position: relative; overflow: hidden;
+        }
+        .btn-modern:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0,111,143,0.3); }
+
+        /* --- RIGHT VISUAL --- */
+        .visual-side { position: relative; opacity: 0; animation: fadeRight 1s ease forwards 0.5s; }
+        .image-frame {
+            position: relative; border-radius: 40px; overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1); transform: rotate(-2deg); transition: 0.5s ease;
+            border: 8px solid var(--surface);
+        }
+        .visual-side:hover .image-frame { transform: rotate(0) scale(1.02); }
+        .main-img { width: 100%; height: auto; display: block; }
+
+        .glass-badge {
+            position: absolute; bottom: 40px; left: -30px;
+            background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(15px);
+            padding: 15px 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); z-index: 2;
+            display: flex; align-items: center; gap: 15px;
+            animation: float 5s ease-in-out infinite;
+        }
+        [data-theme="dark"] .glass-badge { background: rgba(30, 41, 59, 0.75); border-color: rgba(255,255,255,0.1); }
+        .badge-icon { width: 45px; height: 45px; background: var(--g-main); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; }
+
+        /* Footer */
+        .footer-section { background-color: var(--dark-footer); color: #fff; padding: 60px 20px 40px; margin-top: 50px; }
+        .copyright { text-align: center; font-size: 0.9rem; color: rgba(255,255,255,0.4); margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+
+        @media (max-width: 900px) {
+            .maint-container { grid-template-columns: 1fr; padding-top: 40px; }
+            .visual-side { order: -1; margin-bottom: 50px; }
+            .image-frame { transform: rotate(0); }
+            .glass-badge { left: 50%; transform: translateX(-50%); bottom: -20px; width: 80%; justify-content: center; animation: none; }
+            .services-grid { grid-template-columns: 1fr; }
+            
+            /* Mobile Nav Logic */
+            .main-nav { display: none; }
+            .menu-btn { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area" onclick="window.location.href='index.html'" title="Go Home">
+            <img src="Only CATE.png" alt="CATE" class="cate-logo" onerror="this.src='https://via.placeholder.com/150x60/006F8F/FFFFFF?text=CATE'">
+        </div>
+<nav class="main-nav">
+    <a href="about.html" class="nav-link">About Us</a>
+    <a href="clients.html" class="nav-link">Our Clients</a>
+    <a href="why-us.html" class="nav-link">Why Us?</a>
+    
+    <a href="our-work.html" class="nav-link">Our Work</a>
+    
+    <a href="contact.html" class="nav-link">Contact Us</a>
+</nav>
+
+        <div class="header-right">
+            <button class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+            <button class="btn-icon" onclick="toggleTheme()" title="Toggle Dark Mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="overlay-bg" onclick="toggleMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+             <img src="Only CATE.png" alt="CATE" class="mobile-logo">
+             <button class="close-menu" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="mobile-links">
+            <a href="about.html" class="nav-link-mobile" style="--i:1;"><i class="fa-solid fa-circle-info"></i> <span>About Us</span></a>
+            <a href="clients.html" class="nav-link-mobile" style="--i:2;"><i class="fa-solid fa-handshake"></i> <span>Our Clients</span></a>
+            <a href="why-us.html" class="nav-link-mobile" style="--i:3;"><i class="fa-solid fa-medal"></i> <span>Why Us?</span></a>
+            <a href="contact.html" class="nav-link-mobile" style="--i:4;"><i class="fa-solid fa-envelope"></i> <span>Contact Us</span></a>
+        </div>
+    </div>
+
+    <div class="bg-blur blur-1"></div>
+    <div class="bg-blur blur-2"></div>
+
+    <section class="maint-container">
+        
+        <div class="text-content">
+            <h1 class="page-title">CATE Preventive<br>Maintenance Services</h1>
+            
+            <div class="section-header">Key Benefits:</div>
+            <ul class="benefits-list">
+                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <span><strong>Reduced Breakdowns</strong> – Minimizes downtime and costly repairs</span></li>
+                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <span><strong>Extended Equipment Life</strong> – Maintains efficient machine operation</span></li>
+                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <span><strong>Energy Savings</strong> – Timely maintenance reduces energy consumption</span></li>
+                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <span><strong>Safety Guarantee</strong> – Compliance with industry standards</span></li>
+            </ul>
+
+            <div class="section-header">Our Services Include:</div>
+            <div class="services-grid">
+                <div class="service-card" data-tilt>
+                    <div class="s-icon s-blue"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                    <div class="s-info"><h4>Inspections and Diagnostics</h4><p>Early detection of wear and malfunctions</p></div>
+                </div>
+                <div class="service-card" data-tilt>
+                    <div class="s-icon s-purple"><i class="fa-solid fa-oil-can"></i></div>
+                    <div class="s-info"><h4>Periodic Maintenance</h4><p>Oil circuit inspection, filter replacements, SPM checks</p></div>
+                </div>
+                <div class="service-card" data-tilt>
+                    <div class="s-icon s-green"><i class="fa-solid fa-wind"></i></div>
+                    <div class="s-info"><h4>Air System Care</h4><p>Filter cleaning, leak detection, efficiency testing</p></div>
+                </div>
+                <div class="service-card" data-tilt>
+                    <div class="s-icon s-orange"><i class="fa-solid fa-laptop-code"></i></div>
+                    <div class="s-info"><h4>Control System Updates</h4><p>Software upgrades and sensor calibrations</p></div>
+                </div>
+                <div class="service-card" data-tilt>
+                    <div class="s-icon s-red"><i class="fa-solid fa-truck-medical"></i></div>
+                    <div class="s-info"><h4>Emergency Maintenance</h4><p>24/7 electrical and mechanical repair team</p></div>
+                </div>
+            </div>
+
+            <div class="section-header">Flexible Maintenance Plans:</div>
+            <div class="plans-wrapper">
+                <div class="plan-card-item" onclick="window.location.href='contact.html'">Basic (Quarterly)</div>
+                <div class="plan-card-item" onclick="window.location.href='contact.html'">Comprehensive (Annual)</div>
+                <div class="plan-card-item" onclick="window.location.href='contact.html'">Full Engine Maintenance</div>
+                <div class="plan-card-item" onclick="window.location.href='contact.html'">24/7 Emergency Support</div>
+            </div>
+
+            <button class="btn-modern" onclick="window.location.href='contact.html'">
+                Contact Us <i class="fa-solid fa-arrow-right" style="margin-left: 10px;"></i>
+            </button>
+        </div>
+
+        <div class="visual-side">
+            <div class="image-frame" data-tilt>
+                <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=800&auto=format&fit=crop" alt="Preventive Maintenance" class="main-img">
+            </div>
+            
+            <div class="glass-badge">
+                <div class="badge-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <div>
+                    <div style="font-weight:700; font-size:1rem; color:var(--text-main);">100% Guaranteed</div>
+                    <div style="font-size:0.85rem; color:var(--text-muted);">Genuine Spare Parts</div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="footer-section">
+        <div class="copyright">© Copyright 2025 www.cate-eg.com. All Rights Reserved</div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+    <script>
+        // Init Tilt Effect
+        VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
+            max: 10,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.15,
+            scale: 1.02
+        });
+
+        // Theme Logic
+        if (localStorage.getItem('cate_theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('cate_theme', next);
+        }
+
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.querySelector('.overlay-bg').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

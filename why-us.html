@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CATE - Why Us?</title>
+    <link rel="icon" type="image/png" href="Only CATE.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- Modern Color Palette --- */
+        :root {
+            --primary: #006F8F; --primary-dark: #005a75; --accent: #3b82f6;
+            --bg-body: #f8fafc; --surface: #ffffff;
+            --text-main: #0f172a; --text-muted: #475569; --border: #e2e8f0;
+            --shadow-soft: 0 10px 30px -10px rgba(0,0,0,0.08);
+            --shadow-hover: 0 25px 50px -12px rgba(0, 111, 143, 0.25);
+            --dark-footer: #001f2b;
+            --primary-light: #009ebf;
+            --g-main: linear-gradient(135deg, #006F8F 0%, #0ea5e9 100%);
+            --accent-bg: rgba(0, 111, 143, 0.08);
+        }
+
+        [data-theme="dark"] {
+            --primary: #00d2be; --bg-body: #0f172a; --surface: #1e293b;
+            --text-main: #f8fafc; --text-muted: #cbd5e1; --border: #334155;
+            --dark-footer: #0b1116; --shadow-soft: 0 10px 30px -10px rgba(0,0,0,0.5);
+            --primary-light: #5eead4;
+            --accent-bg: rgba(0, 210, 190, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Outfit', 'Cairo', sans-serif; background-color: var(--bg-body); color: var(--text-main); overflow-x: hidden; transition: 0.4s; font-size: 16px; }
+
+        /* --- Animations --- */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.15); } }
+        @keyframes shimmer { 0% { left: -100%; } 100% { left: 200%; } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 111, 143, 0.2); } 70% { box-shadow: 0 0 0 20px rgba(0, 111, 143, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 111, 143, 0); } }
+        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* --- Header --- */
+        header { background: rgba(255,255,255,0.9); backdrop-filter: blur(15px); padding: 15px 5%; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        [data-theme="dark"] header { background: rgba(30,41,59,0.9); border-bottom-color: rgba(255,255,255,0.05); }
+        
+        .logo-area { display: flex; align-items: center; cursor: pointer; transition: transform 0.3s; }
+        .logo-area:hover { transform: scale(1.05); }
+        .cate-logo { height: 55px; object-fit: contain; }
+        
+        .main-nav { display: flex; gap: 35px; }
+        .nav-link { text-decoration: none; color: var(--text-muted); font-weight: 700; font-size: 1.05rem; transition: 0.3s; position: relative; }
+        .nav-link:hover, .nav-link.active { color: var(--primary); }
+        .nav-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0%; height: 3px; background: var(--primary); transition: 0.3s; }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        button { border: none; outline: none; cursor: pointer; font-family: inherit; transition: 0.3s; }
+        .btn-icon { background: transparent; border: 2px solid var(--border); color: var(--text-main); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .btn-icon:hover { background: var(--accent-bg); color: var(--primary); border-color: var(--primary); transform: rotate(15deg); }
+
+        /* Mobile Menu Button */
+        .menu-btn { display: none; background: transparent; font-size: 1.8rem; color: var(--text-main); border: none; cursor: pointer; transition: 0.3s; }
+        .menu-btn:hover { color: var(--primary); transform: scale(1.1); }
+
+        /* --- MOBILE MENU STYLES --- */
+        .mobile-menu {
+            position: fixed; top: 0; right: -320px; width: 320px; height: 100vh;
+            background: var(--surface); 
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            z-index: 1001; 
+            transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+            padding: 30px; display: flex; flex-direction: column; gap: 40px;
+            border-top-left-radius: 30px; border-bottom-left-radius: 30px;
+        }
+        .mobile-menu.active { right: 0; }
+        
+        .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; }
+        .mobile-logo { height: 40px; filter: grayscale(100%); opacity: 0.7; }
+        .close-menu {
+            font-size: 1.5rem; color: var(--text-muted); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--accent-bg);
+        }
+        .close-menu:hover { background: var(--primary); color: white; transform: rotate(90deg); }
+        
+        .mobile-links { display: flex; flex-direction: column; gap: 15px; }
+        .nav-link-mobile {
+            display: flex; align-items: center; gap: 15px;
+            text-decoration: none; color: var(--text-main);
+            font-size: 1.2rem; font-weight: 700; padding: 15px;
+            border-radius: 15px; transition: 0.3s;
+            opacity: 0; transform: translateX(30px);
+        }
+        .nav-link-mobile i { color: var(--primary); font-size: 1.4rem; width: 30px; text-align: center; transition: 0.3s; }
+        
+        .nav-link-mobile:hover, .nav-link-mobile.active { background: var(--accent-bg); color: var(--primary); transform: translateX(10px); }
+        .nav-link-mobile:hover i { transform: scale(1.2); }
+        
+        .mobile-menu.active .nav-link-mobile {
+            opacity: 1; transform: translateX(0);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            transition-delay: calc(0.1s * var(--i));
+        }
+
+        .overlay-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0;
+            visibility: hidden; transition: 0.4s; backdrop-filter: blur(3px);
+        }
+        .overlay-bg.active { opacity: 1; visibility: visible; }
+
+        /* --- HERO --- */
+        .hero-section { position: relative; height: 65vh; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000; }
+        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transform: scale(1.1); animation: slowZoom 20s infinite alternate; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0, 111, 143, 0.85), rgba(59, 130, 246, 0.65)); z-index: 1; }
+        .hero-content { position: relative; z-index: 2; text-align: center; color: white; margin-top: 40px; }
+        
+        .hero-title { font-size: 5.5rem; font-weight: 900; letter-spacing: -2px; line-height: 1; text-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+        .hero-title span { font-weight: 300; display: block; font-size: 2.5rem; letter-spacing: 6px; margin-bottom: 10px; opacity: 0.95; }
+
+        /* --- SECTIONS COMMON --- */
+        .section-padding { padding: 120px 5%; }
+        .section-line { width: 5px; height: 70px; background: var(--g-main); margin: 0 auto 35px; border-radius: 10px; }
+        
+        .section-h2 { font-size: 3.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 30px; line-height: 1.1; }
+        .section-h2 span { color: var(--primary); position: relative; display: inline-block; }
+        .section-h2 span::after { content:''; position: absolute; bottom: 8px; left: 0; width: 100%; height: 12px; background: var(--primary); opacity: 0.15; z-index: -1; transform: skewX(-15deg); }
+
+        /* --- WHY CHOOSE CATE --- */
+        .why-section { text-align: center; max-width: 1100px; margin: 0 auto; }
+        .big-text { font-size: 1.8rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 40px; font-weight: 400; }
+        .big-text strong { color: var(--text-main); font-weight: 800; }
+        .sub-text { font-size: 1.3rem; line-height: 1.7; color: var(--text-muted); max-width: 900px; margin: 0 auto; }
+        .highlight-box { display: inline-block; background: rgba(0, 111, 143, 0.1); padding: 2px 10px; border-radius: 6px; color: var(--primary); font-weight: 800; border-bottom: 2px solid var(--primary); }
+
+        /* --- WHO WE ARE --- */
+        .who-section { display: grid; grid-template-columns: 1fr 1fr; background: var(--surface); border-radius: 40px; overflow: hidden; box-shadow: var(--shadow-soft); margin: 60px 5%; }
+        .who-img-box { position: relative; height: 100%; min-height: 550px; overflow: hidden; }
+        .who-img-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .who-section:hover .who-img-box img { transform: scale(1.05); }
+        .who-content { padding: 90px 70px; display: flex; flex-direction: column; justify-content: center; }
+        .who-h2 { font-size: 3.8rem; font-weight: 900; color: var(--text-main); margin-bottom: 30px; line-height: 1; }
+        .who-h2 span { font-size: 2.2rem; font-weight: 300; color: var(--text-muted); display: block; margin-bottom: 10px; }
+        .who-text { font-size: 1.25rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 40px; font-weight: 500; }
+        .btn-arrow { display: inline-flex; align-items: center; gap: 15px; background: var(--g-main); color: white; padding: 18px 45px; border-radius: 50px; font-weight: 700; font-size: 1.1rem; text-decoration: none; width: fit-content; transition: 0.3s; box-shadow: 0 10px 25px rgba(0, 111, 143, 0.3); }
+        .btn-arrow:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 111, 143, 0.5); padding-right: 55px; }
+        .btn-arrow i { transition: 0.3s; font-size: 1.2rem; }
+        .btn-arrow:hover i { transform: translateX(5px); }
+
+        /* --- DEPARTMENTS (GRID) --- */
+        .dept-section { background-color: var(--bg-body); }
+        .grid-header { text-align: center; margin-bottom: 70px; max-width: 950px; margin-left: auto; margin-right: auto; }
+        .section-intro { font-size: 1.4rem; line-height: 1.8; color: var(--text-muted); margin-top: 25px; font-weight: 500; opacity: 0; animation: fadeUp 0.8s ease forwards 0.2s; }
+        .section-intro strong { color: var(--text-main); font-weight: 800; }
+        .grid-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 35px; max-width: 1450px; margin: 0 auto; }
+        .dept-card { background: var(--surface); border: 1px solid var(--border); padding: 45px 35px; border-radius: 30px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; align-items: flex-start; text-align: left; position: relative; overflow: hidden; width: 100%; flex-basis: 320px; flex-grow: 1; max-width: 400px; opacity: 0; animation: fadeUp 0.8s ease forwards; }
+        .dept-card::before { content:''; position: absolute; top:0; left:0; width:100%; height:5px; background: var(--dept-color); transform: scaleX(0); transform-origin: left; transition: 0.4s; }
+        .dept-card:hover::before { transform: scaleX(1); }
+        .dept-card:hover { transform: translateY(-12px); box-shadow: var(--shadow-hover); border-color: transparent; }
+        .dept-card:nth-child(1) { animation-delay: 0.1s; } .dept-card:nth-child(2) { animation-delay: 0.2s; } .dept-card:nth-child(3) { animation-delay: 0.3s; } .dept-card:nth-child(4) { animation-delay: 0.4s; } .dept-card:nth-child(5) { animation-delay: 0.5s; } .dept-card:nth-child(6) { animation-delay: 0.6s; } .dept-card:nth-child(7) { animation-delay: 0.7s; }
+        .dept-icon { width: 70px; height: 70px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: white; background: var(--dept-bg); margin-bottom: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: 0.4s; }
+        .dept-card:hover .dept-icon { transform: rotate(10deg) scale(1.1); }
+        .dept-title { font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+        .dept-sub { font-size: 0.95rem; font-weight: 700; text-transform: uppercase; color: var(--dept-color); margin-bottom: 18px; letter-spacing: 1px; }
+        .dept-desc { font-size: 1.15rem; line-height: 1.6; color: var(--text-muted); font-weight: 500; }
+
+        /* --- GOAL SECTION --- */
+        .goal-section { display: flex; justify-content: center; padding-bottom: 120px; }
+        .goal-wrapper { max-width: 1200px; width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 45px; padding: 80px; display: flex; align-items: center; gap: 70px; box-shadow: var(--shadow-soft); position: relative; overflow: hidden; }
+        [data-theme="dark"] .goal-wrapper { background: rgba(30, 41, 59, 0.8); }
+        .goal-wrapper::after { content:''; position: absolute; top:0; left:-100%; width:50%; height:100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent); transform: skewX(-20deg); animation: shimmer 5s infinite; pointer-events: none; opacity: 0.3; }
+        .goal-icon-large { font-size: 6rem; color: var(--primary); background: var(--bg-body); width: 160px; height: 160px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: inset 0 0 30px rgba(0,0,0,0.05); animation: pulse 3s infinite; }
+        .goal-content h2 { font-size: 3.5rem; font-weight: 900; margin-bottom: 25px; line-height: 1; }
+        .goal-content h2 span { color: var(--primary); }
+        .goal-text { font-size: 1.5rem; line-height: 1.7; color: var(--text-muted); font-weight: 500; }
+        .highlight-bold { color: var(--text-main); font-weight: 800; border-bottom: 4px solid rgba(0, 111, 143, 0.2); }
+
+        /* --- FREE CONSULTATION SECTION --- */
+        .consultation-section { position: relative; padding: 120px 20px; text-align: center; overflow: hidden; color: white; background: var(--dark-footer); border-top: 1px solid rgba(255,255,255,0.1); }
+        .consultation-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images.unsplash.com/photo-1555421689-49263377564e?q=80&w=1200'); background-size: cover; background-position: center; opacity: 0.2; transition: 0.5s; }
+        .consultation-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(0, 111, 143, 0.8)); z-index: 1; }
+        .consultation-content { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; }
+        .quote-icon { font-size: 4rem; color: var(--accent); margin-bottom: 30px; animation: float 3s ease-in-out infinite; }
+        .consultation-text { font-size: 2.8rem; font-weight: 300; margin-bottom: 50px; line-height: 1.4; }
+        .highlight-free { font-weight: 800; color: white; border-bottom: 3px solid var(--accent); }
+        .btn-connect { display: inline-block; background-color: var(--accent); color: white; padding: 20px 60px; font-weight: 800; letter-spacing: 2px; font-size: 1.1rem; text-transform: uppercase; text-decoration: none; border-radius: 50px; transition: 0.3s; box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4); }
+        .btn-connect:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(59, 130, 246, 0.6); background: white; color: var(--accent); }
+
+        /* --- FOOTER --- */
+        .footer-section { background-color: var(--dark-footer); color: #fff; padding: 60px 20px 40px; margin-top: 0; position: relative; }
+        
+        .footer-grid { max-width: 1150px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 50px; padding-top: 20px; text-align: left; }
+        .footer-col h4 { font-size: 1.1rem; margin-bottom: 25px; color: var(--primary-light); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-text, .footer-link { display: block; color: rgba(255,255,255,0.7); font-size: 0.95rem; line-height: 1.8; margin-bottom: 12px; text-decoration: none; transition: 0.3s; }
+        .footer-link:hover { color: var(--primary-light); transform: translateX(5px); }
+        
+        .subscribe-box { display: flex; border-bottom: 2px solid rgba(255,255,255,0.2); transition: 0.3s; }
+        .subscribe-box:focus-within { border-bottom-color: var(--primary-light); }
+        .subscribe-input { background: transparent; border: none; color: white; padding: 12px 0; width: 100%; outline: none; font-size: 1rem; }
+        .subscribe-btn { background: transparent; border: none; color: var(--primary-light); font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; transition: 0.3s; }
+        .subscribe-btn:hover { color: white; }
+        
+        .copyright { text-align: center; margin-top: 60px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; color: rgba(255,255,255,0.4); }
+
+        @media (max-width: 900px) {
+            .hero-title { font-size: 3.5rem; }
+            .hero-title span { font-size: 1.5rem; }
+            .section-h2 { font-size: 2.5rem; }
+            .who-section { grid-template-columns: 1fr; margin: 50px 0; }
+            .who-img-box { height: 400px; }
+            .who-content { padding: 40px 20px; }
+            .goal-wrapper { flex-direction: column; text-align: center; padding: 50px 25px; gap: 30px; }
+            .dept-card { width: 100%; max-width: 100%; flex-basis: 100%; }
+            .consultation-text { font-size: 1.8rem; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+            .subscribe-box { justify-content: center; }
+            .main-nav { display: none; }
+            .menu-btn { display: block; } /* Show menu button on mobile */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area" onclick="goHome()" title="Go Home">
+            <img src="Only CATE.png" alt="CATE" class="cate-logo" onerror="this.src='https://via.placeholder.com/150x60/006F8F/FFFFFF?text=CATE'">
+        </div>
+
+<nav class="main-nav">
+    <a href="about.html" class="nav-link">About Us</a>
+    <a href="clients.html" class="nav-link">Our Clients</a>
+    <a href="why-us.html" class="nav-link active">Why Us?</a> <a href="our-work.html" class="nav-link">Our Work</a>
+    
+    <a href="contact.html" class="nav-link">Contact Us</a>
+</nav>
+
+        <div class="header-right">
+            <button class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+            <button class="btn-icon" onclick="toggleTheme()" title="Toggle Dark Mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="overlay-bg" onclick="toggleMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+             <img src="Only CATE.png" alt="CATE" class="mobile-logo">
+             <button class="close-menu" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+<div class="mobile-links">
+    <a href="about.html" class="nav-link-mobile" style="--i:1;"><i class="fa-solid fa-circle-info"></i> <span>About Us</span></a>
+    <a href="clients.html" class="nav-link-mobile" style="--i:2;"><i class="fa-solid fa-handshake"></i> <span>Our Clients</span></a>
+    <a href="why-us.html" class="nav-link-mobile active" style="--i:3;"><i class="fa-solid fa-medal"></i> <span>Why Us?</span></a>
+    
+    <a href="our-work.html" class="nav-link-mobile" style="--i:4;">
+        <i class="fa-solid fa-people-group"></i> <span>Our Work</span>
+    </a>
+
+    <a href="contact.html" class="nav-link-mobile" style="--i:5;"><i class="fa-solid fa-envelope"></i> <span>Contact Us</span></a>
+</div>
+    </div>
+
+    <div class="hero-section">
+        <div class="hero-overlay"></div>
+        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop" alt="Why Us Team" class="hero-bg">
+        <div class="hero-content reveal active">
+            <h1 class="hero-title"><span>DISCOVER</span> WHY US?</h1>
+        </div>
+    </div>
+
+    <section class="why-section section-padding reveal">
+        <div class="section-line"></div>
+        <h2 class="section-h2">Why <span>Choose CATE?</span></h2>
+        
+        <p class="big-text">
+            As the <span class="highlight-box">authorized distributor of Atlas Copco</span> in Egypt, 
+            CATE delivers trusted compressed air solutions with certified service and genuine spare parts.
+        </p>
+        
+        <p class="sub-text">
+            Our experienced team ensures reliable support, fast response, and long-term value — 
+            <strong>making us a partner you can depend on.</strong>
+        </p>
+    </section>
+
+    <section class="who-section reveal">
+        <div class="who-img-box">
+            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1200&auto=format&fit=crop" alt="CATE History">
+        </div>
+        <div class="who-content">
+            <h2 class="who-h2">WHO <span>are we?</span></h2>
+            <div class="who-text">
+                <strong style="color:var(--accent); font-size:1.4rem;">Since 2011</strong>, CATE has been a trusted provider of high-performance compressed air solutions across Egypt. 
+                As the authorized distributor of <strong style="color:var(--primary);">Atlas Copco</strong>, we deliver world-class equipment.<br><br>
+                With a customer-centric approach, our sales professionals and in-house service engineers work seamlessly to provide fast support, reliable performance, and a partnership built on expertise and trust.
+            </div>
+            <a href="contact.html" class="btn-arrow">Request Call <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </section>
+
+    <section class="dept-section section-padding">
+        <div class="grid-header reveal">
+            <h2 class="section-h2">How We Help Your <span>Business:</span></h2>
+            <p class="section-intro">
+                At <strong>CATE</strong>, every department works together to deliver a seamless, reliable, and high-value experience for your operations.<br>
+                Here’s how each team supports your business:
+            </p>
+        </div>
+        
+        <div class="grid-container">
+            <div class="dept-card reveal" style="--dept-color:#3b82f6; --dept-bg:linear-gradient(135deg, #3b82f6, #2563eb);">
+                <div class="dept-icon"><i class="fa-solid fa-handshake"></i></div>
+                <div class="dept-title">Sales Team</div>
+                <div class="dept-sub">Machines & Aftermarket</div>
+                <p class="dept-desc">Providing tailored solutions, expert guidance, and genuine parts to maximize your system’s performance.</p>
+            </div>
+
+            <div class="dept-card reveal reveal-delay-1" style="--dept-color:#f59e0b; --dept-bg:linear-gradient(135deg, #f59e0b, #d97706);">
+                <div class="dept-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                <div class="dept-title">Service Team</div>
+                <div class="dept-sub">Electrical & Mechanical</div>
+                <p class="dept-desc">Ensuring smooth, reliable operation through professional installation, maintenance, and fast on-site support.</p>
+            </div>
+
+            <div class="dept-card reveal reveal-delay-2" style="--dept-color:#10b981; --dept-bg:linear-gradient(135deg, #10b981, #059669);">
+                <div class="dept-icon"><i class="fa-solid fa-warehouse"></i></div>
+                <div class="dept-title">Warehouses</div>
+                <div class="dept-sub">Logistics</div>
+                <p class="dept-desc">Guaranteeing availability of genuine spare parts with efficient stock management and quick delivery.</p>
+            </div>
+
+            <div class="dept-card reveal" style="--dept-color:#ef4444; --dept-bg:linear-gradient(135deg, #ef4444, #dc2626);">
+                <div class="dept-icon"><i class="fa-solid fa-headset"></i></div>
+                <div class="dept-title">Technical Support</div>
+                <div class="dept-sub">Expert Assistance</div>
+                <p class="dept-desc">Offering expert assistance, troubleshooting, and real-time guidance to keep your operations running.</p>
+            </div>
+
+            <div class="dept-card reveal reveal-delay-1" style="--dept-color:#8b5cf6; --dept-bg:linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                <div class="dept-icon"><i class="fa-solid fa-stopwatch"></i></div>
+                <div class="dept-title">Rental Dept</div>
+                <div class="dept-sub">Flexible Solutions</div>
+                <p class="dept-desc">Providing flexible, reliable rental solutions to cover temporary needs and minimize downtime.</p>
+            </div>
+
+            <div class="dept-card reveal reveal-delay-2" style="--dept-color:#06b6d4; --dept-bg:linear-gradient(135deg, #06b6d4, #0891b2);">
+                <div class="dept-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                <div class="dept-title">IT & Development</div>
+                <div class="dept-sub">Digital Systems</div>
+                <p class="dept-desc">Empowering operations with smart digital systems that enhance speed, accuracy, and communication.</p>
+            </div>
+
+            <div class="dept-card reveal" style="--dept-color:#64748b; --dept-bg:linear-gradient(135deg, #64748b, #475569);">
+                <div class="dept-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                <div class="dept-title">Accounts</div>
+                <div class="dept-sub">Financial Integrity</div>
+                <p class="dept-desc">Delivering clear, accurate, and seamless financial processes for a smooth client experience.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="goal-section reveal">
+        <div class="goal-wrapper">
+            <div class="goal-icon-large"><i class="fa-solid fa-bullseye"></i></div>
+            <div class="goal-content">
+                <h2 class="goal-content h2">Our <span>Goal</span></h2>
+                <p class="goal-text">
+                    Our goal is to be <span class="highlight-bold">Egypt’s most trusted partner</span> in compressed air solutions, setting new standards of reliability, service, and customer satisfaction.
+                    <br><br>
+                    Driven by <span class="highlight-bold" style="color:var(--primary);">innovation, expertise, and passion</span>, we aim to empower every business we serve and make a lasting impact on the industry.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="consultation-section reveal">
+        <div class="consultation-bg"></div>
+        <div class="consultation-overlay"></div>
+        <div class="consultation-content">
+            <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
+            <h2 class="consultation-text">
+                For a <span class="highlight-free">FREE consultation</span> on how to get started please fill out the form
+            </h2>
+            <a href="contact.html" class="btn-connect">GET CONNECTED</a>
+        </div>
+    </section>
+
+    <div class="footer-section reveal">
+        <div class="footer-grid">
+            <div class="footer-col"><h4>Subscribe Now</h4><div class="subscribe-box"><input type="email" class="subscribe-input" placeholder="Enter your email"><button class="subscribe-btn">Submit</button></div></div>
+            <div class="footer-col"><h4>About Us</h4><p class="footer-text">CATE is organization is based on the principle of decentralized responsibilities and authorities. We create lasting results in a way that is economically and environmentally responsible.</p></div>
+            <div class="footer-col"><h4>Contact Us</h4><a href="mailto:info@cate-eg.com" class="footer-link">info@cate-eg.com</a><a href="tel:020021234567" class="footer-link">02.002.123.4567</a></div>
+        </div>
+        <div class="copyright">© Copyright 2025 www.cate-eg.com. All Rights Reserved | created by Abdelrahman khedr</div>
+    </div>
+
+    <script>
+        // Scroll Reveal Script
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 120; // Trigger slightly earlier
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        // Trigger once on load
+        reveal();
+
+        if (localStorage.getItem('cate_theme') === 'dark') { document.documentElement.setAttribute('data-theme', 'dark'); }
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('cate_theme', next);
+        }
+
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.querySelector('.overlay-bg').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
