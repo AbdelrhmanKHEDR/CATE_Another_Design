@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CATE - Buy New Equipment</title>
+    <title>CATE - Atlas Copco Vacuum Pumps</title>
     
     <link rel="icon" type="image/png" href="Only CATE.png">
     
@@ -144,7 +144,6 @@
         .mobile-menu.active { right: 0; }
         .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; }
         
-        /* UPDATED: Mobile Logo (Color & Bigger) */
         .mobile-logo { height: 60px; filter: none; opacity: 1; transition: 0.3s; }
         
         .close-menu { font-size: 1.5rem; color: var(--text-muted); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--accent-bg); }
@@ -217,53 +216,52 @@
         .social-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s; text-decoration: none; font-size: 1.1rem; }
         .social-btn:hover { background: var(--primary); transform: translateY(-3px); }
         .copyright { text-align: center; margin-top: 70px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; color: rgba(255,255,255,0.4); letter-spacing: 0.5px; }
-/* --- WhatsApp Button Style --- */
-.whatsapp-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    background-color: #25d366;
-    color: #fff;
-    border-radius: 50%;
-    text-align: center;
-    font-size: 35px;
-    box-shadow: 2px 2px 3px #999;
-    z-index: 900;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    
-}
 
-.whatsapp-btn:hover {
-    background-color: #128c7e;
-    color: #fff;
-    transform: scale(1.1);
-}
+        /* --- WhatsApp Button Style --- */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #25d366;
+            color: #fff;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 35px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 900;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
 
-@keyframes pulse-green {
-    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-    70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-}
+        .whatsapp-btn:hover {
+            background-color: #128c7e;
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        @keyframes pulse-green {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+        
         /* --- MOBILE & RESPONSIVE TWEAKS --- */
         @media (max-width: 991px) {
             .main-nav { display: none; }
             .menu-btn { display: block; }
             .header-right { gap: 15px; }
             
-            /* UPDATED: Mobile Footer Grid (Two Columns) */
             .footer-grid { 
-                grid-template-columns: 1fr 1fr; /* تقسيم الفوتر لعمودين */
+                grid-template-columns: 1fr 1fr; 
                 text-align: center; 
                 gap: 20px; 
             }
 
-            /* أول عمود (اللوجو والسوشيال) ياخد العرض كامل */
             .footer-grid > .footer-col:first-child {
                 grid-column: 1 / -1; 
                 margin-bottom: 20px;
@@ -276,7 +274,6 @@
             .footer-link { justify-content: center; font-size: 0.9rem; white-space: nowrap; }
             .social-links { justify-content: center; }
 
-            /* Page Specific Mobile */
             .page-container { grid-template-columns: 1fr; padding-top: 40px; }
             .visual-side { order: -1; margin-bottom: 50px; margin-top: 0; }
             .image-frame { transform: rotate(0); }
@@ -286,7 +283,6 @@
         @media (max-width: 768px) {
             header, header.header-scrolled { height: 70px; padding: 0 15px; }
             
-            /* Logo resizing for tablet/mobile */
             .logo-area { width: auto; height: 100%; }
             .cate-logo { 
                 height: 120px; 
@@ -298,33 +294,17 @@
             .g-cluster-1-big, .g-cluster-2-big { display: none; }
             .g-cluster-1-small { top: 150px; width: 150px; height: 150px; }
             .whatsapp-btn { width: 50px; height: 50px; font-size: 28px; bottom: 20px; right: 20px; }
+            .atlas-logo { height: 30px !important; width: auto; margin-top: 5px; }
         }
 
         @media (max-width: 400px) {
-            /* UPDATED: Bigger Logo for small screens */
             .cate-logo { height: 110px; top: -10px; }
             .atlas-logo { height: 28px; }
             .menu-btn { font-size: 1.4rem; }
-            
-            /* Smaller footer text on tiny screens */
             .footer-link { font-size: 0.8rem; }
         }
 
-        .atlas-logo {
-    height: 55px; 
-    object-fit: contain;
-    transition: height 0.3s ease; 
-}
-
-/* 2. تظبيط اللوجو في الموبايل (عشان ميبقاش ضخم) */
-/* تعديل حجم لوجو أطلس للموبايل فقط */
-@media (max-width: 768px) {
-    .atlas-logo {
-        height: 30px !important; /* جربنا نصغره لـ 30 بيكسل بدل 45 */
-        width: auto; /* عشان يحافظ على أبعاد الصورة */
-        margin-top: 5px; /* تظبيط المسافة لو محتاج */
-    }
-}
+        .atlas-logo { height: 55px; object-fit: contain; transition: height 0.3s ease; }
     </style>
 </head>
 <body>
@@ -377,46 +357,47 @@
             <a href="contact.html" class="nav-link-mobile" style="--i:5;"><i class="fa-solid fa-envelope"></i> <span>Contact Us</span></a>
         </div>
     </div>
+    
     <section class="page-container">
         
         <div class="text-content">
-            <h1 class="page-title">Dryers Reliable & Efficient<br>Air Solutions</h1>
-            <p class="page-subtitle">Atlas Copco delivers high-performance, energy-efficient compressors & air dryers for industrial and manufacturing needs.</p>
+            <h1 class="page-title">Intelligent & Efficient<br>Vacuum Solutions</h1>
+            <p class="page-subtitle">Atlas Copco delivers state-of-the-art vacuum pumps designed to optimize your production processes with maximum energy efficiency and reliability.</p>
             
-            <div class="section-header">Why Atlas Copco?</div>
+            <div class="section-header">Why Atlas Copco Vacuum?</div>
             <ul class="features-list">
-                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <strong>Advanced Technology</strong> - Industry-leading innovations</li>
-                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <strong>Energy Savings</strong> - Lower operational costs with efficient designs</li>
-                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <strong>Durable & Reliable</strong> - Built for long service life</li>
-                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <strong>Wide Selection</strong> - Screw (Fixed & Variable Speed Drive), Piston, Air Dryers</li>
-                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <strong>Global Support</strong> - Expert service & maintenance</li>
+                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <strong>VSD Technology</strong> - Energy savings of up to 50% compared to traditional tech</li>
+                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <strong>Quiet Operation</strong> - Purpose-built canopy for exceptionally low noise levels</li>
+                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <strong>Smart Connectivity</strong> - Elektronikon® for remote monitoring and control</li>
+                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <strong>Plug & Play</strong> - Easy installation with a compact, all-in-one footprint</li>
+                <li><div class="check-box"><i class="fa-solid fa-check"></i></div> <strong>Clean & Sustainable</strong> - Advanced oil retention and clean exhaust capabilities</li>
             </ul>
 
-            <div class="section-header">Compressor & Dryer Types</div>
+            <div class="section-header">Vacuum Pump Types</div>
             <div class="services-grid">
                 <div class="service-card" data-tilt>
-                    <div class="s-icon" style="background:var(--g-blue);"><i class="fa-solid fa-fan"></i></div>
-                    <div class="s-info"><h4>Rotary Screw</h4><p>(GA/GX/VSD Series) – Continuous, efficient operation</p></div>
+                    <div class="s-icon" style="background:var(--g-blue);"><i class="fa-solid fa-wind"></i></div>
+                    <div class="s-info"><h4>Rotary Screw Vacuum</h4><p>(GHS VSD+ Series) – Intelligent, highly efficient performance</p></div>
                 </div>
                 <div class="service-card" data-tilt>
-                    <div class="s-icon" style="background:var(--g-orange);"><i class="fa-solid fa-gauge-high"></i></div>
-                    <div class="s-info"><h4>Piston</h4><p>(LT/LF Series) – Ideal for workshops & intermittent use</p></div>
+                    <div class="s-icon" style="background:var(--g-cyan);"><i class="fa-solid fa-water"></i></div>
+                    <div class="s-info"><h4>Liquid Ring Vacuum</h4><p>(LRP VSD+ Series) – Built for harsh, wet environments</p></div>
                 </div>
                 <div class="service-card" data-tilt>
-                    <div class="s-icon" style="background:var(--g-cyan);"><i class="fa-solid fa-droplet-slash"></i></div>
-                    <div class="s-info"><h4>Air Dryers</h4><p>(FD/FX/CD) – Remove water from compressed air circuits</p></div>
+                    <div class="s-icon" style="background:var(--g-orange);"><i class="fa-solid fa-compress"></i></div>
+                    <div class="s-info"><h4>Dry Claw Vacuum</h4><p>(DZS Series) – Contaminant-free, durable, and reliable operation</p></div>
                 </div>
             </div>
 
             <div class="info-note">
-                <i class="fa-solid fa-circle-info"></i> <strong>Lower maintenance costs:</strong> By preventing corrosion and reducing moisture-induced wear and tear on air grilles, air dryers help reduce maintenance costs for air systems.
+                <i class="fa-solid fa-lightbulb"></i> <strong>Maximize your productivity:</strong> Atlas Copco vacuum solutions provide a stable, consistent vacuum that improves your final product quality while significantly reducing lifecycle costs.
             </div>
 
-            <div class="section-header">Benefits of Buying New</div>
+            <div class="section-header">Benefits of Upgrading</div>
             <div class="pills-wrapper">
-                <div class="pill-item"><i class="fa-solid fa-circle-check"></i> Lower Maintenance</div>
-                <div class="pill-item"><i class="fa-solid fa-circle-check"></i> Warranty Protection</div>
-                <div class="pill-item"><i class="fa-solid fa-circle-check"></i> Latest Tech</div>
+                <div class="pill-item"><i class="fa-solid fa-leaf"></i> Energy Efficient</div>
+                <div class="pill-item"><i class="fa-solid fa-wifi"></i> Smart Monitoring</div>
+                <div class="pill-item"><i class="fa-solid fa-screwdriver-wrench"></i> Low Maintenance</div>
             </div>
 
             <div class="action-row">
@@ -426,7 +407,7 @@
 
         <div class="visual-side">
             <div class="image-frame" data-tilt>
-                <img src="images/buy-new.webp" alt="Buy Equipment" class="main-img">
+                <img src="images/vacuum.webp" alt="Atlas Copco Vacuum Equipment" class="main-img">
             </div>
             
             <div class="glass-badge">
